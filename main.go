@@ -58,8 +58,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				var outmsg bytes.Buffer
 
 				switch {
-					case strings.Compare(message.Text, "溫馨?��?") == 0:
-						outmsg.WriteString("<<<溫馨?��?>>>\r\n?�為?�個群很吵 -->\r\n?��?�??�以 ?��??��?\r\n\r\n[?�學?�] ?�票?��?�?-->\r\n?��?�?筆�????�以?��??�票\r\n\r\n[?��??�] ?�要大家�??�助 -->\r\n?��?�?筆�???請更?�自己�??�絡?��?")
+					case strings.Compare(message.Text, "溫馨提醒") == 0:
+						outmsg.WriteString("<<<溫馨提醒>>>\r\n因為這個群很吵 -->\r\n右上角 可以 關閉提醒\r\n\r\n[同學會] 投票進行中 -->\r\n右上角 筆記本 可以進行投票\r\n\r\n[通訊錄] 需要大家的協助 -->\r\n右上角 筆記本 請更新自己的聯絡方式")
 					
 					case strings.HasSuffix(message.Text, "麼帥"):
 						outmsg.WriteString(GetHandsonText(message.Text))
@@ -87,28 +87,28 @@ func GetHandsonText(inText string) string {
 	var outText bytes.Buffer
 	rand.Seed(time.Now().UnixNano())
 	i := rand.Intn(100)
-	outmsg.WriteString("?�覺得�???)
+	outmsg.WriteString("我覺得還是")
 	switch i % 20 {
 	case 0:
-		outmsg.WriteString("小�?")
+		outmsg.WriteString("小明")
 	case 1:
 		outmsg.WriteString("彬彬")
 	case 2:
-		outmsg.WriteString("?�榮")
+		outmsg.WriteString("登榮")
 	case 3:
-		outmsg.WriteString("?�能")
+		outmsg.WriteString("灯能")
 	case 4:
-		outmsg.WriteString("?�爺")
+		outmsg.WriteString("品爺")
 	case 5:
 		outmsg.WriteString("建良")
 	case 6:
-		outmsg.WriteString("?��?")
+		outmsg.WriteString("虎二")
 	case 7:
-		outmsg.WriteString("志�?")
+		outmsg.WriteString("志偉")
 	case 8:
-		outmsg.WriteString("?��?�?)
+		outmsg.WriteString("芭樂妹")
 	case 9:
-		outmsg.WriteString("大哥�?)
+		outmsg.WriteString("大哥大")
 	case 10:
 		outmsg.WriteString("三哥")
 	default:
@@ -116,7 +116,7 @@ func GetHandsonText(inText string) string {
 		outText.WriteString("+1")
 		return outText.String()
 	}
-	outmsg.WriteString("比�?�?)
+	outmsg.WriteString("比較帥")
 	return outmsg.String()	
 }
 
@@ -127,13 +127,13 @@ func GetPPAPText() string {
 	case 0:
 		return "I have a pencil,\r\nI have an Apple,\r\nApple pencil.\r\nI have a watch,\r\nI have an Apple,\r\nApple watch."
 	case 1:
-		return "?�帶一?��?請�?要�?Apple Pencil?�進水?�裡，�?管是?��??�是鳳梨??
+		return "順帶一提，請不要把Apple Pencil刺進水果裡，不管是蘋果還是鳳梨。"
 	case 2:
-		return "?��?了�??�是以書寫工?��?種�?食物?��??��??��???
+		return "我懂了，這是以書寫工具與種類食物為題的饒舌歌。"
 	case 3:
-		return "?��?太�?楚PPAP?��?麼�?但�??�以?��?AAPL?�相?��?訊�?
+		return "我不太清楚PPAP是什麼，但你可以問我AAPL的相關資訊。"
 	case 4:
-		return "?�是不�??��??��?�?
+		return "我是不會接著唱的！"
 	}
-	return "?��? siri ??
+	return "去問 siri 啦"
 }
