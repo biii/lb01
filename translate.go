@@ -36,14 +36,20 @@ func GetTransText(key string, text string) string {
 	var target = "en"
 	var intext = text
 	switch {
-		case strings.HasPrefix(text, "ä¸­"):
+		case strings.HasPrefix(text, "ä¸?):
 			target = "zh-TW"
-			intext = strings.TrimLeft(text, "ä¸­")
-		case strings.HasPrefix(text, "æ—¥"):
+			intext = strings.TrimLeft(text, "ä¸?)
+		case strings.HasPrefix(text, "??):
 			target = "ja"
-			intext = strings.TrimLeft(text, "æ—¥")
-		case strings.HasPrefix(text, "è‹±"):
-			intext = strings.TrimLeft(text, "è‹±")
+			intext = strings.TrimLeft(text, "??)
+		case strings.HasPrefix(text, "æ³?):
+			target = "fr"
+			intext = strings.TrimLeft(text, "æ³?)
+		case strings.HasPrefix(text, "??):
+			target = "ko"
+			intext = strings.TrimLeft(text, "??)
+		case strings.HasPrefix(text, "??):
+			intext = strings.TrimLeft(text, "??)
 	}
 	return DoTrans(key, target, intext);
 }
