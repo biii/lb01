@@ -131,7 +131,7 @@ func GetBeautyText(inText string) string {
 	outmsg.WriteString("我覺得還是")
 	switch i % 25 {
 	case 0:
-		outmsg.WriteString("綸教授")
+		outmsg.WriteString("綸教務長")
 	case 1:
 		outmsg.WriteString("芭樂妹")
 	case 2:
