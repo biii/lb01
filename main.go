@@ -64,6 +64,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					case strings.HasSuffix(message.Text, "麼帥"):
 						outmsg.WriteString(GetHandsonText(message.Text))
 
+					case strings.HasSuffix(message.Text, "麼美"):
+						outmsg.WriteString(GetBeautyText(message.Text))
+
 					case strings.Compare(message.Text, "PPAP") == 0:
 						outmsg.WriteString(GetPPAPText())
 
@@ -117,6 +120,36 @@ func GetHandsonText(inText string) string {
 		return outText.String()
 	}
 	outmsg.WriteString("比較帥")
+	return outmsg.String()	
+}
+
+func GetBeautyText(inText string) string {
+	var outmsg bytes.Buffer	
+	var outText bytes.Buffer
+	rand.Seed(time.Now().UnixNano())
+	i := rand.Intn(100)
+	outmsg.WriteString("我覺得還是")
+	switch i % 25 {
+	case 0:
+		outmsg.WriteString("綸教授")
+	case 1:
+		outmsg.WriteString("芭樂妹")
+	case 2:
+		outmsg.WriteString("之瑋")
+	case 3:
+		outmsg.WriteString("小茹")
+	case 4:
+		outmsg.WriteString("詩佩")
+	case 5:
+		outmsg.WriteString("Onyx")
+	case 6:
+		outmsg.WriteString("淑慧")
+	default:
+		outText.WriteString(inText)
+		outText.WriteString("+1")
+		return outText.String()
+	}
+	outmsg.WriteString("比較美")
 	return outmsg.String()	
 }
 
