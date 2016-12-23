@@ -82,11 +82,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					log.Print(err)
 				}
 			} 
-		} else if event.Type == linebot.EventTypeFollow {
-			if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(hint)).Do(); err != nil {
-				log.Print(err)
-			}
-		}
+		} 
 	}
 }
 
