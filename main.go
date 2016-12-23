@@ -81,10 +81,10 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(outmsg.String())).Do(); err != nil {
 					log.Print(err)
 				}
-			} else if event.Type == linebot.EventTypeJoin {
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(hint)).Do(); err != nil {
-					log.Print(err)
-				}
+			} 
+		} else if event.Type == linebot.EventTypeJoin {
+			if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(hint)).Do(); err != nil {
+				log.Print(err)
 			}
 		}
 	}
