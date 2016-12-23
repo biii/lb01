@@ -78,14 +78,12 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						outmsg.WriteString(GetBeautyText(message.Text))
 
 					default:
-						continue
+						outmsg.WriteString(message.ID + ":" + message.Text))
 				}
 				
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(outmsg.String())).Do(); err != nil {
 					log.Print(err)
 				}
-			case *linebot.TemplateMessage:
-				_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.AltText)).Do()	
 			} 
 		}
 	}
