@@ -27,6 +27,7 @@ import (
 
 var bot *linebot.Client
 var gkey string
+const hint = "<<<溫馨提醒>>>\r\n因為這個群很吵 -->\r\n右上角 可以 關閉提醒\r\n\r\n[同學會] 投票進行中 -->\r\n右上角 筆記本 可以進行投票\r\n\r\n[通訊錄] 需要大家的協助 -->\r\n右上角 筆記本 請更新自己的聯絡方式"
 
 func main() {
 	var err error
@@ -59,7 +60,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 
 				switch {
 					case strings.Compare(message.Text, "溫馨提醒") == 0:
-						outmsg.WriteString("<<<溫馨提醒>>>\r\n因為這個群很吵 -->\r\n右上角 可以 關閉提醒\r\n\r\n[同學會] 投票進行中 -->\r\n右上角 筆記本 可以進行投票\r\n\r\n[通訊錄] 需要大家的協助 -->\r\n右上角 筆記本 請更新自己的聯絡方式")
+						outmsg.WriteString(hint)
 					
 					case strings.HasSuffix(message.Text, "麼帥"):
 						outmsg.WriteString(GetHandsonText(message.Text))
@@ -78,6 +79,10 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				}
 				
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(outmsg.String())).Do(); err != nil {
+					log.Print(err)
+				}
+			} else if event.Type == linebot.EventTypeJoin {
+				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(hint)).Do(); err != nil {
 					log.Print(err)
 				}
 			}
