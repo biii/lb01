@@ -78,7 +78,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						outmsg.WriteString(GetBeautyText(message.Text))
 
 					default:
-						outmsg.WriteString(message.ID + ":" + message.Text))
+						outmsg.WriteString(message.ID + ":" + message.Text)
 				}
 				
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(outmsg.String())).Do(); err != nil {
