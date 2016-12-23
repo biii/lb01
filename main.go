@@ -75,13 +75,17 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						outmsg.WriteString(GetTransText(gkey, strings.TrimLeft(message.Text, "翻翻")))
 
 					default:
-						outmsg.WriteString(message.ID + ":" + message.Text)
+						continue
 				}
 				
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(outmsg.String())).Do(); err != nil {
 					log.Print(err)
 				}
 			} 
+		} else if event.Type == linebot.EventTypeFollow {
+			if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(hint)).Do(); err != nil {
+				log.Print(err)
+			}
 		}
 	}
 }
