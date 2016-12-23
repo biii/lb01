@@ -74,9 +74,6 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					case strings.HasPrefix(message.Text, "翻翻"):
 						outmsg.WriteString(GetTransText(gkey, strings.TrimLeft(message.Text, "翻翻")))
 
-					case strings.HasSuffix(message.Text, ""):
-						outmsg.WriteString(GetBeautyText(message.Text))
-
 					default:
 						outmsg.WriteString(message.ID + ":" + message.Text)
 				}
