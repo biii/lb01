@@ -74,6 +74,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					case strings.HasPrefix(message.Text, "翻翻"):
 						outmsg.WriteString(GetTransText(gkey, strings.TrimLeft(message.Text, "翻翻")))
 
+					case strings.HasSuffix(message.Text, ""):
+						outmsg.WriteString(GetBeautyText(message.Text))
+
 					default:
 						continue
 				}
@@ -81,11 +84,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(outmsg.String())).Do(); err != nil {
 					log.Print(err)
 				}
+			case *linebot.TemplateMessage:
+				_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.AltText + ":" + message.Template)).Do()	
 			} 
-		} else if event.Type == linebot.EventTypeJoin {
-			if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(hint)).Do(); err != nil {
-				log.Print(err)
-			}
 		}
 	}
 }
