@@ -61,7 +61,7 @@ func yelp_parse(bot *linebot.Client, token string, loc *linebot.LocationMessage,
 			GeneralOptions: &yelp.GeneralOptions{
 				Term: food,
 			},
-			LocationOptions: &yelp.LocationOptions {
+			LocationOptions: &yelp.LocationOptions{
 				Location: loc.Address
 			}
 			//LocaleOptions: &yelp.LocaleOptions{
