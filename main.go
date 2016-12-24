@@ -26,14 +26,17 @@ import (
 )
 
 var bot *linebot.Client
-var gkey string
+var locmap = make(map[string]*linebot.LocationMessage)
 const hint = "<<<溫馨提醒>>>\r\n因為這個群很吵 -->\r\n右上角 可以 關閉提醒\r\n\r\n[同學會] 投票進行中 -->\r\n右上角 筆記本 可以進行投票\r\n\r\n[通訊錄] 需要大家的協助 -->\r\n右上角 筆記本 請更新自己的聯絡方式"
 
 func main() {
 	var err error
 	bot, err = linebot.New(os.Getenv("ChannelSecret"), os.Getenv("ChannelAccessToken"))
-	gkey = os.Getenv("GOOGLEAPIKEY")
 	log.Println("Bot:", bot, " err:", err)
+	
+	translate_init()
+	yelp_init()
+	
 	http.HandleFunc("/callback", callbackHandler)
 	port := os.Getenv("PORT")
 	addr := fmt.Sprintf(":%s", port)
@@ -72,7 +75,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						outmsg.WriteString(GetPPAPText())
 
 					case strings.HasPrefix(message.Text, "翻翻"):
-						outmsg.WriteString(GetTransText(gkey, strings.TrimLeft(message.Text, "翻翻")))
+						outmsg.WriteString(GetTransText(strings.TrimLeft(message.Text, "翻翻")))
+
+					case strings.HasPrefix(message.Text, "吃吃"):
+						yelp_parse(bot, event.ReplyToken, locmap[GetID(event.Source)], strings.TrimLeft(message.Text, "吃吃"))
+						continue
 
 					default:
 						continue
@@ -81,9 +88,23 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(outmsg.String())).Do(); err != nil {
 					log.Print(err)
 				}
+			case *linebot.LocationMessage:
+				locmap[GetID(event.Source)] = message				
 			} 
-		} 
+		}
 	}
+}
+
+func GetID(source *linebot.EventSource) string {
+	switch source.Type {
+	case linebot.EventSourceTypeUser:
+		return source.UserID
+	case linebot.EventSourceTypeGroup:
+		return source.GroupID
+	case linebot.EventSourceTypeRoom:
+		return source.RoomID
+	}
+	return source.UserID
 }
 
 func GetHandsonText(inText string) string {
