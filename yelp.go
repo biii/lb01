@@ -63,7 +63,7 @@ func yelp_parse(bot *linebot.Client, token string, loc *linebot.LocationMessage,
 			},
 			LocationOptions: &yelp.LocationOptions{
 				Location: loc.Address,
-			}
+			},
 			//LocaleOptions: &yelp.LocaleOptions{
 			//	lang: "zh",
 			//},
