@@ -21,6 +21,7 @@ import (
 	"bytes"
 	"math/rand"
 	"time"
+	"strconv"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 )
@@ -60,6 +61,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
 				var outmsg bytes.Buffer
+				var lowerMsg = strings.ToLower(message.Text)
 
 				switch {
 					case strings.Compare(message.Text, "溫馨提醒") == 0:
@@ -71,8 +73,17 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					case strings.HasSuffix(message.Text, "麼美"):
 						outmsg.WriteString(GetBeautyText(message.Text))
 
-					case strings.Compare(message.Text, "PPAP") == 0:
+					case strings.Compare(lowerMsg, "ppap") == 0:
 						outmsg.WriteString(GetPPAPText())
+
+					case strings.Compare(message.Text, "123") == 0:
+						outmsg.WriteString(Get123Text())
+
+					case strings.HasPrefix(lowerMsg, "roll"):
+						outmsg.WriteString(GetRandomNum(strings.TrimLeft(lowerMsg, "roll")))
+						
+					case strings.HasPrefix(message.Text, "骰骰"):
+						outmsg.WriteString(GetRandomNum(strings.TrimLeft(lowerMsg, "骰骰")))
 
 					case strings.HasPrefix(message.Text, "翻翻"):
 						outmsg.WriteString(GetTransText(strings.TrimLeft(message.Text, "翻翻")))
@@ -80,7 +91,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					case strings.HasPrefix(message.Text, "吃吃"):
 						yelp_parse(bot, event.ReplyToken, locmap[GetID(event.Source)], strings.TrimLeft(message.Text, "吃吃"))
 						continue
-
+					
+					case strings.HasPrefix(message.Text, "問問"):
+						outmsg.WriteString(CompareCheckTokens(message.Text))
 					default:
 						continue
 				}
@@ -89,8 +102,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					log.Print(err)
 				}
 			case *linebot.LocationMessage:
-				locmap[GetID(event.Source)] = message				
-			} 
+				locmap[GetID(event.Source)] = message
+			}
 		}
 	}
 }
@@ -191,4 +204,27 @@ func GetPPAPText() string {
 		return "我是不會接著唱的！"
 	}
 	return "去問 siri 啦"
+}
+
+func Get123Text() string {
+	rand.Seed(time.Now().UnixNano())
+	i := rand.Intn(100)
+	switch i % 5 {
+	case 0:
+		return "不是人"
+	case 1:
+		return "機器人"
+	}
+	return "木頭人"
+}
+
+func GetRandomNum(input string) string {
+	input = strings.TrimSpace(input)
+	seed, err := strconv.Atoi(input)
+	if err != nil || seed <= 0 {
+		seed = 100
+	}
+	rand.Seed(time.Now().UnixNano())
+	result := rand.Intn(seed) + 1
+	return strconv.Itoa(result)
 }
